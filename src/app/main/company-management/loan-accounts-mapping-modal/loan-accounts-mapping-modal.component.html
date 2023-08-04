@@ -1,0 +1,176 @@
+<div class="modal-header" style="background-color: #000000 !important">
+  <h5 class="modal-title" style="color: orange;">Loan Accounts Mapping</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+    style="background-color: orange;"></button>
+</div>
+
+<div class="modal-body">
+  <div class="row justify-content-center">
+    <div style="width: 800px; background-color: white">
+      <form [formGroup]="loanAccountsMappingForm">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-5">
+
+              <div class="form-group">
+                <mat-form-field class="col">
+                  <mat-select (selectionChange)="onChange($event)" [(value)]="selectedCompany" placeholder="Database"
+                              formControlName="database1">
+                    <mat-option>--Select one--</mat-option>
+                    <mat-option *ngFor="let company of companies" [value]="company.id">
+                      {{company.sql_server_db}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              &nbsp;
+              <div *ngIf="selectedCompany;then scheduled_contents">here is
+                ignored
+              </div>
+              &nbsp;
+              <div class="form-group">
+                <ng-template #scheduled_contents>
+                  <label><strong>Company:</strong></label>&nbsp;{{this.companyName}}
+                </ng-template>
+              </div>
+              &nbsp;
+              <div class="form-group">
+                <label for="account1">Account ID</label>
+                <input autocomplete="off" class="form-control" id="account1" name="account1"
+                       required formControlName="account1"
+                       type="text" placeholder="Account1">
+              </div>
+              <span class="text-danger"
+                    *ngIf="loanAccountsMappingForm.get('account1')?.touched && loanAccountsMappingForm.get('account1')?.errors">
+            Account is required
+          </span>
+              &nbsp;
+              <div class="form-group">
+                <label for="currency1">Currency 1</label>
+                <input autocomplete="off" class="form-control" id="currency1" name="currency1"
+                       required formControlName="currency1"
+                       type="text" placeholder="Currency1">
+                <span class="text-danger"
+                      *ngIf="loanAccountsMappingForm.get('currency1')?.touched && loanAccountsMappingForm.get('currency1')?.errors">
+            Currency is required
+          </span>
+              </div>
+            </div>
+            &nbsp;
+            <div class="col-5">
+
+              <div class="form-group">
+                <mat-form-field class="col">
+                  <mat-select (selectionChange)="onChange2($event)" [(value)]="selectedCompany2" placeholder="Database"
+                              formControlName="database2">
+                    <mat-option>--Select one--</mat-option>
+                    <mat-option *ngFor="let company of companies" [value]="company.id">
+                      {{company.sql_server_db}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              &nbsp;
+              <div *ngIf="selectedCompany2;then scheduled_contents2">here is
+                ignored
+              </div>
+              &nbsp;
+              <div class="form-group">
+                <ng-template #scheduled_contents2>
+                  <label><strong>Company:</strong></label>&nbsp;{{this.companyName2}}
+                </ng-template>
+              </div>
+              &nbsp;
+              <div class="form-group">
+                <label for="account2">Account ID</label>
+                <input autocomplete="off" class="form-control" id="account2" name="account2"
+                       required formControlName="account2"
+                       type="text" placeholder="Account2">
+                <span class="text-danger"
+                      *ngIf="loanAccountsMappingForm.get('account2')?.touched && loanAccountsMappingForm.get('account2')?.errors">
+            Account is required
+          </span>
+              </div>
+              &nbsp;
+              <div class="form-group">
+                <label for="currency2">Currency 2</label>
+                <input autocomplete="off" class="form-control" id="currency2" name="currency2"
+                       required formControlName="currency2"
+                       type="text" placeholder="Currency2">
+                <span class="text-danger"
+                      *ngIf="loanAccountsMappingForm.get('currency2')?.touched && loanAccountsMappingForm.get('currency2')?.errors">
+            Currency is required
+          </span>
+              </div>
+            </div>
+          </div>
+          &nbsp;
+          <div>
+            <button class="btn btn-success" type="submit" (click)="submit()">Submit</button>
+          </div>
+        </div>
+      </form>
+
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <table class="table table-striped table-bordered table-sm table-responsive-xl table-font">
+        <thead class="table-dark">
+        <tr>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="company">Company Name</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="database">Company Database</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="account">Account</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="account_id">AccountId</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="currency">Currency</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="company">Company Name</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="database">Company Database</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="account">Account</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="account_id">AccountId</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="currency">Currency</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="createdAt">Created Date</th>
+          <th scope="col" [appSort]="loanAccountsMappings" data-order="desc" data-name="action">Action</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+          *ngFor="let item of loanAccountsMappings | paginate: { itemsPerPage: countCustomer, currentPage: pageCustomer }">
+          <td>{{item.company1}}</td>
+          <td>{{item.database1}}</td>
+          <td>{{item.account1}}</td>
+          <td>{{item.account_id1}}</td>
+          <td>{{item.currency1}}</td>
+          <td>{{item.company2}}</td>
+          <td>{{item.database2}}</td>
+          <td>{{item.account2}}</td>
+          <td>{{item.account_id2}}</td>
+          <td>{{item.currency2}}</td>
+          <td>{{item.createdAt}}</td>
+          <td>
+            <button class="btn btn-danger" type="submit" (click)="delete(item.id)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+
+
+        <div class="row">
+          <div class="col">
+            <div class="float-right">
+              <pagination-controls
+                (pageChange)="pageCustomer = $event"></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </table>
+    </div>
+  </div>
+</div>
+<footer class="footer" style="background-color: #000000 !important">
+  <span class="row justify-content-center" style="color: white;">All Rights Reserved 2023 @ReconcileIT</span>
+</footer>

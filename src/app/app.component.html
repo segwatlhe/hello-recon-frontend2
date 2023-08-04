@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <img src="assets/images/ReconcileIT-V2.png" width="193" height="100">
+  <a class="navbar-brand" href="#">ReconcileIT</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav" *ngIf="isLoggedIn">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink] = "['']" routerLinkActive = "">Home</a>
+      </li>
+      <li *ngIf="user_role === 'ROLE_ADMINISTRATOR'" class="nav-item active">
+        <a class="nav-link" [routerLink] = "['company-management']" routerLinkActive = "">Companies</a>
+      </li>
+      <li *ngIf="user_role === 'ROLE_ADMINISTRATOR'" class="nav-item active">
+        <a class="nav-link" [routerLink] = "['user-management']" routerLinkActive = "">User Management</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink] = "['user-profile']" routerLinkActive = "">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a href class="nav-link" (click)="logout()">Logout</a>
+      </li>
+
+    </ul>
+  </div>
+  <p class="nav-user">{{user_name}}</p>
+</nav>
+<router-outlet></router-outlet>

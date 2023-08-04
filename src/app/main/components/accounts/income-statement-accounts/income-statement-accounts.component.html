@@ -1,0 +1,84 @@
+<div class="company-container">
+    <br/>
+    <div class="row">
+      <div class="col-9">
+        <input [(ngModel)]="search_input" (keyup)="filter_accounts()" placeholder="Search by Account ID" value="" class="account-search"/>
+        <input [(ngModel)]="search_name_input" (keyup)="filter_account_names()" placeholder="Search by Account Name" value="" class="account-search"/>
+        <select [(ngModel)]="status_dropdown" (change)="filter_account_status()">
+          <option value="0">All</option>
+          <option value="1">With Administrator</option>
+          <option value="2">With Preparer</option>
+          <option value="3">With Reviewer</option>
+          <option value="4">Completed</option>
+        </select>
+        &nbsp;&nbsp;
+        <button *ngIf="user_role !== 'ROLE_ADMINISTRATOR'" (click)="openBulkCertifyModal($event)">Bulk Prepare</button>
+        <button *ngIf="user_role == 'ROLE_ADMINISTRATOR' && checkEditable2(selectedMonth2, selectedYear2)" (click)="openWorkResetModal($event)">Work Flow Reset</button>
+        &nbsp;
+        <button *ngIf="canPickupReviews === true && user_role !== 'ROLE_ADMINISTRATOR'" (click)="openBulkReviewModal($event)">Bulk Review</button>
+                &nbsp;
+        <button (click)="reset()">Refresh</button>
+      </div>
+      <div class="col-1">
+        <h6 class="float-end">{{this.count}}% Completed</h6>
+      </div>
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      &nbsp;
+      <div class="col-1">
+        <h6 class="float-end">{{this.incomestatementcount}}</h6>
+      </div>
+      <progress *ngIf="loader===true" class="loading">Loading...</progress>
+    </div>
+  <table class="table table-striped table-bordered table-sm table-responsive-xl table-font">
+      <thead class="table-dark">
+      <tr>
+        <th>To action</th>
+        <th scope="col" [appSort]="accountData" data-order="desc" data-name="account_id">Account ID</th>
+        <th scope="col" [appSort]="accountData" data-order="desc" data-name="account_name">Account Name</th>
+        <th scope="col" [appSort]="accountData" data-order="desc" data-name="balance">Balance</th>
+        <th scope="col" [appSort]="accountData" data-order="desc" data-name="balance">Foreign Balance</th>
+        <th scope="col" [appSort]="accountData" data-order="desc" data-name="status">Status</th>
+        <th scope="col" [appSort]="accountData" data-order="desc" data-name="risk">Risk</th>
+        <th scope="col" [appSort]="accountData" data-order="desc" data-name="currency">Currency</th>
+        <th scope="col" [appSort]="accountData" data-order="desc" data-name="preparer">Preparer</th>
+        <th scope="col" [appSort]="accountData" data-order="desc" data-name="reviewer">Reviewer</th>
+        <th scope="col" [appSort]="accountData" data-order="desc" data-name="createdAt">Created</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of accountData | paginate: { itemsPerPage: countCustomer, currentPage: pageCustomer }">
+        <td
+          class="{{readyClass(item.preparer_id, item.reviewer_id, item.status)}}">{{readyText(item.preparer_id, item.reviewer_id, item.status)}}</td>
+        <td>{{item.account_id}}</td>
+        <td>{{item.account_name}}</td>
+        <td>{{item.balance | currency :' '}}</td>
+        <td>{{item.foreignBalance | currency :' '}}</td>
+        <td>{{statusText(item.status)}}</td>
+        <td class="{{riskClass(item.risk)}}">{{item.risk}}</td>
+        <td>{{item.currency}}</td>
+        <td>{{item.preparer_id && !item.preparer ? '[Deleted user]' : item.preparer}}</td>
+        <td>{{item.reviewer}}</td>
+        <td>{{dateFormat(item.createdAt)}}</td>
+        <td>
+          <button id="{{item.id}}"
+                  (click)="openModal($event, item.account_id)" [disabled]="btnstate">{{checkEditable(selectedMonth2, selectedYear2, item.status)}}</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  <div class="row">
+    <div class="col">
+      <div class="float-right">
+        <pagination-controls
+          (pageChange)="pageCustomer = $event"></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>

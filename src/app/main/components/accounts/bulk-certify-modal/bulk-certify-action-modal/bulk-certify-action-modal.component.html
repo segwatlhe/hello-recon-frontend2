@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="actionModalLabel">Submit for review</h5>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-12">
+      <textarea [(ngModel)]="description"
+                required="true"
+                class="form-control"
+                [className]="description_error !== '' ? 'error-description-block-show capture-description-text' : 'capture-description-text'"
+                (keydown)="keyDown()" [autofocus]="true">
+      </textarea>
+      <span *ngIf="description.errors?.required && (description.dirty || description.touched)"
+            class="alert alert-danger">
+        Description is required
+      </span>
+    </div>
+  </div>
+</div>
+<div class="modal-footer justify-content-between">
+  <div>
+    <button type="button" class="btn btn-primary" (click)="saveAndClose()" [disabled]="btnstate">Submit prepared workpaper</button>
+    &nbsp;
+    <button type="button" class="btn btn-danger" (click)="modalRef.close()">Close</button>
+  </div>
+</div>

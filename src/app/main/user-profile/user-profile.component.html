@@ -1,0 +1,35 @@
+<h2 class="page-headers">Profile</h2>
+<div class="row user-save-form">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <div class="row">
+      <div class="col-4">First name</div>
+      <div class="col-8"><input [(ngModel)]="firstName_input" id="firstName" value="{{firstName_input}}" class="full-width-input"/></div>
+    </div>
+    <div class="row">
+      <div class="col-4">Surname</div>
+      <div class="col-8"><input [(ngModel)]="surname_input" id="surname" value="{{surname_input}}" class="full-width-input"/></div>
+    </div>
+    <div class="row">
+      <div class="col-4">Password</div>
+      <div class="col-8"><input type="password" [(ngModel)]="password_input" id="password" value="" autocomplete="new-password" placeholder="Leave empty to keep current password" class="full-width-input"/></div>
+    </div>
+    <div *ngIf="password_input !== '' && password_input !== undefined" class="row">
+      <div class="col-4">Confirm Password</div>
+      <div class="col-8"><input type="password" [(ngModel)]="confirm_password_input" id="confirm_password" value="" autocomplete="new-password" placeholder="" class="full-width-input"/></div>
+    </div>
+    <div *ngIf="password_input !== '' && password_input !== undefined && confirm_password_input !== password_input"><p class="password-match-text">Passwords do not match</p></div>
+    <div *ngIf="checkPasswordMatch() === true">
+      <div *ngIf="loader === false" class="button-container">
+        <button type="button" class="btn btn-primary user-save-button" (click)="saveUser()">Save changes</button>
+      </div>
+      <div *ngIf="loader === true" class="loader loader-small">Loading...</div>
+    </div>
+    <div *ngIf="checkPasswordMatch() === false" class="row">
+      <div class="button-container">
+        <button type="button" class="btn btn-primary user-save-button user-save-button-disabled" disabled>Save changes</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-4"></div>
+</div>

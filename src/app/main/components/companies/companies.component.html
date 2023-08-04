@@ -1,0 +1,31 @@
+<div class="row selector-width">
+  <div id="dateSelector" class="data-selector date-selector">
+    <label for="selectYearOption">Year</label>
+    <select [(ngModel)]="selectedYear" name="selectYearOption" id="selectYearOption" class='form-select'>
+      <option *ngFor="let item of years"
+              [value]="item.year">
+        {{item.year}}
+      </option>
+    </select>
+    <label for="selectMonthOption">Month</label>
+    <select [(ngModel)]="selectedMonth" name="selectMonthOption" id="selectMonthOption" class='form-select'>
+      <option *ngFor="let item of months"
+              [value]="item.month">
+        {{getMonthName(item.month)}}
+      </option>
+    </select>
+    <button class="btn btn-secondary filter-button" (click)="searchDates()">Filter</button>
+  </div>
+</div>
+<div class="row selector-width">
+  <div class=" data-selector company-selector">
+    <h4>Companies:</h4>
+    <div class="company-container">
+      <ul>
+        <li *ngFor="let item of companies" >
+            <a id="{{item.company_id ? item.company_id : item.id}}" (click)="selectCompany(item.company_id ? item.company_id : item.id)" class="company-link">{{item.company_name}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

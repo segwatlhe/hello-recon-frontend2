@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="actionModalLabel">{{heading}}</h5>
+</div>
+<div class="modal-body">
+  <div *ngIf="action === 'reject-capture' || action === 'submit-capture' || action === 'capture-completed'" class="row">
+    <div class="col-12">
+      <textarea [(ngModel)]="description" [className]="description_error !== '' ? 'error-description-block-show capture-description-text' : 'capture-description-text'" (keydown)="keyDown()"></textarea>
+      <p [className]="description_error !== '' ? 'error-description-show' : 'error-description-hide'">{{description_error}}</p>
+    </div>
+  </div>
+</div>
+<div class="modal-footer justify-content-between">
+  <div *ngIf="role === 'ROLE_ADMINISTRATOR' && current_status !== 1 && current_status !== 4 then thenAdminButtonBlock else elseAdminButtonBlock"></div><br/>
+  <ng-template #thenAdminButtonBlock>
+    <div>
+      <button type="button" class="btn btn-primary" (click)="saveAndClose()">Save changes</button>
+    </div>
+  </ng-template>
+  <ng-template #elseAdminButtonBlock></ng-template>
+  <div *ngIf="role !== 'ROLE_ADMINISTRATOR' && (current_status === 1 || current_status === 2) && new_status === 3 then thenPreparerButtonBlock else elseReviewerButtonBlock"></div><br/>
+  <ng-template #thenPreparerButtonBlock>
+    <div>
+      <button type="button" class="btn btn-primary" (click)="saveAndClose()">Submit prepared workpaper</button>
+    </div>
+  </ng-template>
+  <div *ngIf="role !== 'ROLE_ADMINISTRATOR' && current_status === 3 && new_status === 2 then thenReviewerButtonBlock else elseReviewerButtonBlock"></div><br/>
+  <ng-template #thenReviewerButtonBlock>
+    <div>
+      <button type="button" class="btn btn-primary" (click)="saveAndClose()">Reject and Submit</button>
+    </div>
+  </ng-template>
+  <div *ngIf="role !== 'ROLE_ADMINISTRATOR' && current_status === 3 && new_status === 4 then thenReviewerAcceptButtonBlock else elseReviewerButtonBlock"></div><br/>
+  <ng-template #thenReviewerAcceptButtonBlock>
+    <div>
+      <button type="button" class="btn btn-primary" (click)="saveAndClose()">Approve and Submit</button>
+    </div>
+  </ng-template>
+  &nbsp;
+  <button type="button" class="btn btn-danger" (click)="modalRef.close()">Close</button>
+  <ng-template #elseReviewerButtonBlock></ng-template>
+</div>

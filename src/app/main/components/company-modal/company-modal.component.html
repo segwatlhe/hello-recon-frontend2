@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="actionModalLabel">{{company_name_input === '' ? 'Add' : 'Edit'}} Company</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+  ></button>
+</div>
+<div class="modal-body">
+  <div class="row">
+      <div class="col-6">Company Name</div>
+      <div class="col-6"><input [(ngModel)]="company_name_input"  id="comany_name" value="{{company_name_input}}"/></div>
+  </div>
+  <div class="row">
+    <div class="col-6">SQL Server Database</div>
+    <div class="col-6"><input [(ngModel)]="sql_server_db_input" id="sql_server_db" value="{{sql_server_db_input}}"/></div>
+  </div>
+  <div *ngIf="company_details && company_details.company_id" class="row">
+    <div class="col-6">Active</div>
+    <div class="col-6 form-check form-switch"><input
+      [(ngModel)]="active_input"
+      mdbCheckbox
+      class="form-check-input"
+      type="checkbox"
+      id="flexSwitchActiveChecked"
+      [checked]="active_input"
+    /></div>
+  </div>
+</div>
+<div class="modal-footer justify-content-between">
+  <div *ngIf="loader === false" class="button-container">
+    <div *ngIf="company_details && company_details.company_id then editCompanyBlock else addCompanyBlock"></div>
+    <ng-template #editCompanyBlock>
+      <button type="button" class="btn btn-primary" (click)="saveCompany(company_details.company_id)">Save changes</button>
+      <button type="button" class="btn btn-danger btn-left" (click)="deleteCompany(company_details.company_id)">Delete Company</button>
+    </ng-template>
+    <ng-template #addCompanyBlock>
+      <button type="button" class="btn btn-primary" (click)="addCompany()">Add Company</button>
+    </ng-template>
+    </div>
+  <div *ngIf="loader === true" class="loader loader-small">Loading...</div>
+</div>

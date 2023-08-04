@@ -1,0 +1,13 @@
+version: '2'
+services:
+  hello-group-recon-frontend:
+    image: hgdockerza/hello-recon-frontend:1.0.0
+    container_name: hello-group-recon-frontend
+    ports:
+      - "6481:8080"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "1000"
+    restart: always

@@ -1,0 +1,58 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="actionModalLabel">{{username_input === '' ? 'Add' : 'Edit'}} User</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+  ></button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-4">Username</div>
+    <div class="col-8"><input [(ngModel)]="username_input" id="username" value="{{username_input}}" class="full-width-input"/></div>
+  </div>
+  <div class="row">
+    <div class="col-4">First name</div>
+    <div class="col-8"><input [(ngModel)]="firstName_input" id="firstName" value="{{firstName_input}}" class="full-width-input"/></div>
+  </div>
+  <div class="row">
+    <div class="col-4">Surname</div>
+    <div class="col-8"><input [(ngModel)]="surname_input" id="surname" value="{{surname_input}}" class="full-width-input"/></div>
+  </div>
+  <div class="row">
+    <div class="col-4">Email</div>
+    <div class="col-8"><input [disabled]="disabled" [(ngModel)]="email_input" id="email" value="{{email_input}}" class="full-width-input"/></div>
+  </div>
+  <div class="row">
+    <div class="col-4">Password</div>
+    <div class="col-8"><input type="password" [(ngModel)]="password_input" id="password" value="" autocomplete="new-password" placeholder="{{placeholder}}" class="full-width-input"/></div>
+  </div>
+  <div class="row" *ngIf="!user_details">
+    <div class="col-4">Role</div>
+    <div class="col-8">
+      <select [disabled]="disabled" [(ngModel)]="selectedRole">
+        <option value="">Unassigned</option>
+        <option value="Administrator">Administrator</option>
+        <option value="User">User</option>
+      </select>
+    </div>
+  </div>
+  <div *ngIf="selectedRole !== 'Administrator'" class="row">
+    <div class="col-4">Can review</div>
+    <div class="col-8"><input type="checkbox" [(ngModel)]="can_review_input" id="can_review" value="{{can_review_input}}"/></div>
+  </div>
+</div>
+<div class="modal-footer justify-content-between">
+  <div *ngIf="loader === false" class="button-container">
+    <div *ngIf="user_details && user_details.user_id then editUserBlock else addUserBlock"></div>
+    <ng-template #editUserBlock>
+      <button type="button" class="btn btn-primary" (click)="saveUser(user_details.user_id)">Save changes</button>
+      <button type="button" class="btn btn-danger btn-left" (click)="deleteUser(user_details.user_id)">Delete User</button>
+    </ng-template>
+    <ng-template #addUserBlock>
+      <button type="button" class="btn btn-primary" (click)="addUser()">Add User</button>
+    </ng-template>
+  </div>
+  <div *ngIf="loader === true" class="loader loader-small">Loading...</div>
+</div>

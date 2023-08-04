@@ -1,0 +1,46 @@
+<h2 class="page-headers">Company Management</h2>
+<div class="row account-table-width">
+  <div class="col-1"></div>
+  <div class="col-6 add-company">
+    <button (click)="addCompany()">Add Company</button>
+    <button *ngIf="role === 'ROLE_ADMINISTRATOR' && this.loader2 === false" class="sync-button" (click)="openPpiMappingModal()">PPI Mapping</button>
+    <button *ngIf="role === 'ROLE_ADMINISTRATOR' && this.loader2 === false" class="sync-button" (click)="openDcmMappingModal()">DCM Mapping</button>
+    <button *ngIf="role === 'ROLE_ADMINISTRATOR' && this.loader2 === false" class="sync-button" (click)="openLoanAccountsModal()">Loan Accounts Mapping</button>
+    <!--    <button *ngIf="role === 'ROLE_ADMINISTRATOR' && this.loader2 === false" class="sync-button" (click)="sync()">Sync</button>-->
+    <div *ngIf="loader2 === true" class="loader loader-small sync-all-loader">Loading...</div>
+  </div>
+</div>
+<div *ngIf="loader === false" class="row account-table-width">
+  <div class="col-1"></div>
+  <div class="col-10">
+    <div class="row history-table-row">
+      <table class="table table-striped table-bordered table-sm table-responsive-xl table-font">
+        <thead class="table-dark">
+        <tr>
+          <th>Company Name</th>
+          <th>Company Database</th>
+          <th>Last Sync</th>
+          <th>Active</th>
+          <th>Action</th>
+          <th>Sync</th>
+<!--          <th>Sync Previous Month</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of companies">
+          <td>{{item.company_name}}</td>
+          <td>{{item.sql_server_db}}</td>
+          <td>{{dateFormat(item.last_sync)}}</td>
+          <td>{{item.active === 1 ? "Active" : "Inactive"}}</td>
+          <td><button (click)="editCompany(item.id, item.company_name,item.sql_server_db, item.active)">Edit</button></td>
+          <td>
+            <button *ngIf="role === 'ROLE_ADMINISTRATOR' && this.loader2 === false" class="sync-button" (click)="syncCompany(item.id, item.company_name)">Sync Company</button>
+            <div *ngIf="loader2 === true" class="loader loader-small">Loading...</div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="loader === true" class="loader">Loading...</div>

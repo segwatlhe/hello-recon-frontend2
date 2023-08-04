@@ -1,0 +1,114 @@
+<div class="modal-header" style="background-color: #000000 !important">
+  <h5 class="modal-title" style="color: orange;">PPI Mapping</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+    style="background-color: orange;"></button>
+</div>
+
+<div class="modal-body">
+  <div class="row justify-content-center">
+    <div style="width: 400px; background-color: white">
+      <form [formGroup]="ppiMappingForm">
+
+        <div class="card-body">
+
+          <div class="form-group">
+            <mat-form-field class="col">
+              <mat-select (selectionChange)="onChange($event)" [(value)]="selectedCompany" placeholder="Database"
+                          formControlName="database">
+                <mat-option>--Select one--</mat-option>
+                <mat-option *ngFor="let company of companies" [value]="company.id">
+                  {{company.sql_server_db}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="selectedCompany;then scheduled_contents">here is
+            ignored
+          </div>
+
+          <div class="form-group">
+            <ng-template #scheduled_contents>
+              <label><strong>Company:</strong></label>&nbsp;{{this.companyName}}
+            </ng-template>
+          </div>
+          &nbsp;
+          <div class="form-group">
+            <label for="account">Account</label>
+            <input autocomplete="off" class="form-control" id="account" name="account"
+                   required formControlName="account"
+                   type="text" placeholder="Account">
+            <span class="text-danger"
+                  *ngIf="(ppiMappingForm.get('account')?.touched) && ppiMappingForm.get('account')?.errors">
+                Account is required
+          </span>
+          </div>
+          &nbsp;
+          <div class="form-group">
+            <label for="account">Partner Code</label>
+            <input autocomplete="off" class="form-control" id="partner_code" name="partner_code"
+                   required formControlName="partner_code"
+                   type="text" placeholder="partner_code">
+            <span class="text-danger"
+                  *ngIf="(ppiMappingForm.get('partner_code')?.touched) && ppiMappingForm.get('partner_code')?.errors">
+                Partner Code is required
+          </span>
+          </div>
+          &nbsp;
+          <div>
+            <button class="btn btn-success" type="submit" (click)="submit()" [disabled]="!this.ppiMappingForm.valid">
+              Submit
+            </button>
+          </div>
+          &nbsp;
+        </div>
+      </form>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <table class="table table-striped table-bordered table-sm table-responsive-xl table-font">
+        <thead class="table-dark">
+        <tr>
+          <th scope="col" [appSort]="ppiMappings" data-order="desc" data-name="company">Company Name</th>
+          <th scope="col" [appSort]="ppiMappings" data-order="desc" data-name="database">Company Database</th>
+          <th scope="col" [appSort]="ppiMappings" data-order="desc" data-name="account">Account</th>
+          <th scope="col" [appSort]="ppiMappings" data-order="desc" data-name="account_id">AccountId</th>
+          <th scope="col" [appSort]="ppiMappings" data-order="desc" data-name="partner_code">Partner_Code</th>
+          <th scope="col" [appSort]="ppiMappings" data-order="desc" data-name="createdAt">Created Date</th>
+          <th scope="col" [appSort]="ppiMappings" data-order="desc" data-name="action">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of ppiMappings | paginate: { itemsPerPage: countCustomer, currentPage: pageCustomer }">
+          <td>{{item.company}}</td>
+          <td>{{item.database}}</td>
+          <td>{{item.account}}</td>
+          <td>{{item.account_id}}</td>
+          <td>{{item.partner_code}}</td>
+          <td>{{item.createdAt}}</td>
+          <td>
+            <button class="btn btn-danger" type="submit" (click)="delete(item.id)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+        <div class="row">
+          <div class="col">
+            <div class="float-right">
+              <pagination-controls
+                (pageChange)="pageCustomer = $event"></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </table>
+    </div>
+  </div>
+</div>
+<footer class="footer" style="background-color: #000000 !important">
+  <span class="row justify-content-center" style="color: white;">All Rights Reserved 2023 @ReconcileIT</span>
+</footer>
